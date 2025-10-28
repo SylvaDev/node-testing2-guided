@@ -13,17 +13,22 @@ function getAll() {
 }
 
 function getById(id) {
-  return null
+  return db('hobbits').where('id', id).first()
 }
 
 async function insert(hobbit) {
-  return null
+  return await db('hobbits').insert(hobbit).then(([id]) => {
+    return db('hobbits').where('id', id).first()
+  })
 }
 
 async function update(id, changes) {
-  return null
+  await db('hobbits').where({ id }).update(changes)
+  return db('hobbits').where({ id }).first()
 }
 
-function remove(id) {
-  return null
+async function remove(id) {
+  const deleted = await db('hobbits').where({ id }).first()
+  await db('hobbits').where({ id }).del()
+  return deleted
 }
